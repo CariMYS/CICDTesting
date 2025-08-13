@@ -5,6 +5,9 @@ using Core.Persistence.EntityFrameworkCore;
 using Persistence.EntityFrameworkCore;
 using Core.CQRS;
 using Core.CQRS.RequestHandler;
+using System.Reflection;
+using Application.Interfaces.RepositoryInterfaces;
+using Persistence.EntityFrameworkCore.DbContexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,16 +15,16 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterModule(new AutofacPersistenceModule(builder.Configuration));
-    containerBuilder.RegisterType<UnitOfWork>()
+    containerBuilder.RegisterType<UnitOfWork<AppDbContext>>()
                     .As<IUnitOfWork>()
                     .InstancePerLifetimeScope();
     containerBuilder.RegisterType<Mediator>()
                     .As<IMediator>()
                     .InstancePerLifetimeScope();
-    containerBuilder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+    containerBuilder.RegisterAssemblyTypes(typeof(IProjectRepository).Assembly)
         .AsClosedTypesOf(typeof(IRequestHandler<,>))
         .InstancePerLifetimeScope();
-    containerBuilder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+    containerBuilder.RegisterAssemblyTypes(typeof(IProjectRepository).Assembly)
         .AsClosedTypesOf(typeof(INotificationHandler<>))
         .InstancePerLifetimeScope();
 });

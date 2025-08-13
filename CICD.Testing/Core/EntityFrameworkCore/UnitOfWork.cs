@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.Persistence.EntityFrameworkCore
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork<T> : IUnitOfWork
+        where T : DbContext
     {
-        public DbContext Context { get; }
+        public T Context { get; }
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(T context)
         {
             Context = context;
         }
