@@ -7,9 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="EFCore\DbContexts\" />
-    <Folder Include="EFCore\Configurations\" />
-    <Folder Include="EFCore\Repositories\" />
+    <Folder Include="EntityFrameworkCore\Configurations\" />
+    <Folder Include="EntityFrameworkCore\Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>
